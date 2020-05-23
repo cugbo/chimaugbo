@@ -1,0 +1,4 @@
+Include LICENSE
+Include README.rst
+recursive-include chimaugboscrumy/static *
+recursive-include chimaugboscrumy/template *

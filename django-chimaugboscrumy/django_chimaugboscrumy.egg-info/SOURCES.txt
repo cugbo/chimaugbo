@@ -1,0 +1,8 @@
+MANIFEST.in
+README.rst
+setup.py
+django_chimaugboscrumy.egg-info/PKG-INFO
+django_chimaugboscrumy.egg-info/SOURCES.txt
+django_chimaugboscrumy.egg-info/dependency_links.txt
+django_chimaugboscrumy.egg-info/top_level.txt
+migrations/__init__.py
