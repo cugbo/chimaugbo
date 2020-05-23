@@ -3,7 +3,14 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 class GoalStatus(models.Model):
-    status_name = models.CharField(max_length=250)
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('reviewing', 'Reviewing'),
+        ('approval', 'Approval'),
+    )
+    status_name = models.CharField(max_length=250,
+                                    choices = STATUS_CHOICES,
+                                    default = 'pending')
     
     def __str__(self):
         return self.status_name
@@ -19,7 +26,7 @@ class ScrumyGoals(models.Model):
     goal_status = models.ForeignKey(GoalStatus, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.status_name
+        return self.goal_name
 
 
 class ScrumyHistory(models.Model):
