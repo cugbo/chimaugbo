@@ -1,36 +1,35 @@
-from django.db import models
-from django.utils import timezone
-from django.contrib.auth.models import User
-
-class GoalStatus(models.Model):
-    status_name = models.CharField(max_length=250)
-    def __str__(self):
-        return self.status_name
-
-
-class ScrumyGoals(models.Model):
-    goal_name = models.CharField(max_length=250)
-    goal_id = models.IntegerField(default=1)
-    created_by = models.CharField(max_length=250)
-    moved_by = models.CharField(max_length=250)
-    owner = models.CharField(max_length=250)
-    user = models.ForeignKey(User, related_name='goal_created', on_delete=models.PROTECT)
-    goal_status = models.ForeignKey(GoalStatus, on_delete=models.PROTECT)
-
-    def __str__(self):
-        return self.status_name
+def move_goal(request, goal_id):
+    message = {'error': 'A record with that goal id does not exist'}
+    try:
+        obj = ScrumyGoals.objects.get(id=goal_id)
+    except Exception as e:
+        return render(request, 'chimaugboscrumy/exception.html', message)
+    else:
+        return HttpResponse(obj.goal_name)
 
 
-class ScrumyHistory(models.Model):
-    moved_by = models.CharField(max_length=250)
-    created_by = models.CharField(max_length=250)
-    moved_from = models.CharField(max_length=250)
-    moved_to = models.CharField(max_length=50)
-    time_of_action = models.TimeField(default=timezone.now)
-    goal = models.ForeignKey(ScrumyGoals, on_delete=models.CASCADE)
+def add_goal(request):
+    already_used = []
+    number = randint(1000, 9999)
+    if number not in already_used:
+        addgoal = ScrumyGoals.objects.create(goal_name='Keep Learning Django',
+                                             goal_id=number,
+                                             created_by='Louis',
+                                             moved_by='Louis', owner='Louis',
+                                             goal_status=GoalStatus.objects.get
+                                             (status_name='Weekly Goal'),
+                                             user=User.objects.get(
+                                                 username='Louis Oma')
+                                             )
+        already_used.append(number)
+    return HttpResponse(addgoal)
 
-    def __str__(self):
-        return self.created_by
-
-
-# Create your models here.
+def home (request):
+    objs = ScrumyGoals.objects.all()
+    myuser = User.objects.all()
+    dictionary = {
+        'goal_name': objs.goal_name_set,
+        'goal_id': '1',
+        'user': User.objects.goal_name(first_name='Louis'),
+    }
+    return render(request, 'chimaugboscrumy/home.html', dictionary)
