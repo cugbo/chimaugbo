@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import path, include
 
-from chimaugbscrumy import views
+from chimaugboscrumy import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
